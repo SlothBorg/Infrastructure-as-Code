@@ -31,3 +31,7 @@ sudo chmod +x /usr/local/bin/docker-compose
 # start and enable docker
 sudo systemctl start docker
 sudo systemctl enable docker
+
+# add user to the docker group
+sudo usermod -aG docker ubuntu
+sudo su - $USER
