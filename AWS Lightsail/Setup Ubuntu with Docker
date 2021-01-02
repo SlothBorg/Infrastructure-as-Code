@@ -4,7 +4,7 @@
 sudo apt update
 
 # Install Required Dependencies
-sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common mysql-client -y
 
 # add repo key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
