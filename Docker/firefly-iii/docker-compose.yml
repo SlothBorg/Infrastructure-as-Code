@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  fireflyiii:
+    image: jc5x/firefly-iii:latest
+    volumes:
+      - firefly_iii_upload:/var/www/html/storage/upload
+    environment:
+      VIRTUAL_HOST: firefly.chupacabra.dev
+      LETSENCRYPT_HOST: firefly.chupacabra.dev
+      LETSENCRYPT_EMAIL: admin@chupacabra.dev
+    env_file: .env
+    depends_on:
+      - fireflyiiidb
+  fireflyiiidb:
+    image: yobasystems/alpine-mariadb:latest
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_USER=firefly
+      - MYSQL_PASSWORD=secret_firefly_password
+      - MYSQL_DATABASE=firefly
+    volumes:
+      - firefly_iii_db:/var/lib/mysql
+volumes:
+   firefly_iii_upload:
+   firefly_iii_db:
+networks:
+  default:
+    external:
+      name: nginx-proxy

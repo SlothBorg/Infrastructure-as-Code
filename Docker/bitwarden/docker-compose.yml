@@ -1,0 +1,15 @@
+version: '3'
+services:
+  bitwarden:
+    image: bitwardenrs/server:1.16.3
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: warden.chupacabra.dev
+      LETSENCRYPT_HOST: warden.chupacabra.dev
+      LETSENCRYPT_EMAIL: admin@chupacabra.dev
+    volumes:
+      - ./bw_data:/data
+networks:
+  default:
+    external:
+      name: nginx-proxy
