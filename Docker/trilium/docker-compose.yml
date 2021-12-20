@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  trilium:
+    image: zadam/trilium:latest
+    restart: unless-stopped
+    environment:
+      TRILIUM_DATA_DIR: /data
+      VIRTUAL_HOST: "${DOMAIN}"
+      LETSENCRYPT_HOST: "${DOMAIN}"
+      LETSENCRYPT_EMAIL: "${EMAIL}"
+    volumes:
+      - ./trilium:/data
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
