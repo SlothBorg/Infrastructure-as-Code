@@ -1,0 +1,3 @@
+curl -o lightsail-compose.sh (RAW GITHUB URL)
+chmod +x ./lightsail-compose.sh
+./lightsail-compose.sh

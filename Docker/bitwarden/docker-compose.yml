@@ -1,0 +1,15 @@
+version: '3'
+services:
+  bitwarden:
+    image: bitwardenrs/server:1.16.3
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: "${DOMAIN}"
+      LETSENCRYPT_HOST: "${DOMAIN}"
+      LETSENCRYPT_EMAIL: "${EMAIL}"
+    volumes:
+      - ./bw_data:/data
+networks:
+  default:
+    external:
+      name: nginx-proxy
