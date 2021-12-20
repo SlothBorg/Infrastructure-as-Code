@@ -1,0 +1,14 @@
+version: '3.5'
+services:
+  web:
+    container_name: monster-bash-site
+    image: monster-bash
+    restart: always
+    environment:
+      VIRTUAL_HOST: "${DOMAIN}"
+      LETSENCRYPT_HOST: "${DOMAIN}"
+      LETSENCRYPT_EMAIL: "${EMAIL}"
+networks:
+  default:
+    external:
+      name: nginx-proxy
