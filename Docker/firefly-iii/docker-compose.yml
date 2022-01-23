@@ -15,7 +15,7 @@ services:
   fireflyiiidb:
     image: yobasystems/alpine-mariadb:latest
     environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: yes
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_PASSWORD: "${DB_PASS}"
       MYSQL_USER: "${DB_USER}"
