@@ -1,0 +1,55 @@
+version: '3'
+services:
+  wallabag:
+    image: wallabag/wallabag:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT}
+      - SYMFONY__ENV__DATABASE_DRIVER=${DB_DRIVER}
+      - SYMFONY__ENV__DATABASE_HOST=${DB_HOST}
+      - SYMFONY__ENV__DATABASE_PORT=${DB_PORT}
+      - SYMFONY__ENV__DATABASE_NAME=${DB_NAME}
+      - SYMFONY__ENV__DATABASE_USER=${DB_USER}
+      - SYMFONY__ENV__DATABASE_PASSWORD=${DB_PASS}
+      - SYMFONY__ENV__DATABASE_CHARSET=${DB_CHAR}
+      - SYMFONY__ENV__SECRET=${SECRET}
+      - SYMFONY__ENV__MAILER_HOST=${MAIL_HOST}
+      - SYMFONY__ENV__MAILER_USER=~
+      - SYMFONY__ENV__MAILER_PASSWORD=~
+      - SYMFONY__ENV__FOSUSER_REGISTRATION=${REG}
+      - SYMFONY__ENV__FOSUSER_CONFIRMATION=${REG_CONFIRM}
+      - SYMFONY__ENV__FROM_EMAIL=${EMAIL}
+      - SYMFONY__ENV__DOMAIN_NAME=${DOMAIN}
+      - SYMFONY__ENV__SERVER_NAME=${SERVER_NAME}
+      - VIRTUAL_HOST=${DOMAIN}
+      - LETSENCRYPT_HOST=${DOMAIN}
+      - LETSENCRYPT_EMAIL=${EMAIL}
+    volumes:
+      - ./data/images:/var/www/wallabag/web/assets/images
+    healthcheck:
+      test: ["CMD", "wget" ,"--no-verbose", "--tries=1", "--spider", "http://localhost"]
+      interval: 1m
+      timeout: 3s
+    depends_on:
+      - db
+      - redis
+  db:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=wallaroot
+    volumes:
+      - ./data/db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 20s
+      timeout: 3s
+  redis:
+    image: redis:alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 20s
+      timeout: 3s
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
