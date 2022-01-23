@@ -35,7 +35,7 @@ services:
   db:
     image: mariadb:latest
     environment:
-      - MYSQL_ROOT_PASSWORD=wallaroot
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT}
     volumes:
       - ./data/db:/var/lib/mysql
     healthcheck:
