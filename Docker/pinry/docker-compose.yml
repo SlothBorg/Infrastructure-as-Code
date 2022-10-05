@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  pinry:
+    image: getpinry/pinry:latest
+    restart: unless-stopped
+    environment:
+      TRILIUM_DATA_DIR: /data
+      VIRTUAL_HOST: "${DOMAIN}"
+      LETSENCRYPT_HOST: "${DOMAIN}"
+      LETSENCRYPT_EMAIL: "${EMAIL}"
+    volumes:
+      - ./pinry:/data
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
