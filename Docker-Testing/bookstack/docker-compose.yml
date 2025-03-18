@@ -3,37 +3,50 @@ services:
     image: lscr.io/linuxserver/bookstack:latest
     container_name: bookstack
     depends_on:
-      - db
+      - bookstack_db
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - APP_URL="${DOMAIN}"
-      - APP_KEY="${APP_KEY}"
-      - DB_HOST="${DB_HOST}"
+      - APP_URL=${DOMAIN}
+      - APP_KEY=${APP_KEY}
+      - DB_HOST=bookstack_db
       - DB_PORT=3306
-      - DB_USERNAME="${DB_USER}"
-      - DB_PASSWORD="${DB_PASS}"
-      - DB_DATABASE="${DB_NAME}"
+      - DB_USERNAME=${DB_USER}
+      - DB_PASSWORD=${DB_PASS}
+      - DB_DATABASE=${DB_NAME}
     volumes:
       - ./bookstack_data/config:/config
     ports:
       - 6875:80
     restart: unless-stopped
-  db:
+    networks:
+      - proxy_network
+      - bookstack_network
+
+  bookstack_db:
     image: lscr.io/linuxserver/mariadb:latest
-    container_name: mariadb
+    container_name: bookstack_db
+    hostname: bookstack_db
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - MYSQL_ROOT_PASSWORD="${DB_ROOT_PASS}"
-      - MYSQL_DATABASE=${DB_USER}"
-      - MYSQL_USER="${DB_NAME}"
-      - MYSQL_PASSWORD="${DB_PASS}"
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
     volumes:
       - ./db_data/config:/config
       - ./db_data/data:/var/lib/mysql
     ports:
       - 3306:3306
     restart: unless-stopped
+    networks:
+      - bookstack_network
+
+networks:
+  proxy_network:
+    driver: bridge
+  bookstack_network:
+    driver: bridge
