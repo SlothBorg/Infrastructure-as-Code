@@ -9,9 +9,9 @@ services:
       - PGID=1000
       - TZ=America/New_York
       - URL="${URL}"
-      - SUBDOMAINS=wildcard # Set this if you want wildcard certs
-      - VALIDATION=dns # Options: http, dns, duckdns
-      - DNSPLUGIN=linode # Change based on your DNS provider
+      - SUBDOMAINS=wildcard
+      - VALIDATION=dns
+      - DNSPLUGIN=linode
       - EMAIL="${EMAIL}"
       - ONLY_SUBDOMAINS=false
       - DOCKER_MODS=linuxserver/mods:universal-package-install
@@ -20,11 +20,10 @@ services:
       - ./swag_data/config:/config
     ports:
       - 443:443
-      - 80:80 #optional
     restart: unless-stopped
     networks:
       - proxy_network
 
 networks:
   proxy_network:
-    driver: bridge
+    external: true
