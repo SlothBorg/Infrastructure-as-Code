@@ -1,4 +1,3 @@
-version: "3"
 services:
   swag:
     image: lscr.io/linuxserver/swag
@@ -15,6 +14,8 @@ services:
       - DNSPLUGIN=linode # Change based on your DNS provider
       - EMAIL=azriel6615@protonmail.com
       - ONLY_SUBDOMAINS=false
+      - DOCKER_MODS=linuxserver/mods:universal-package-install
+      - INSTALL_PIP_PACKAGES=certbot-dns-linode
     volumes:
       - ./swag_data/config:/config
     ports:
