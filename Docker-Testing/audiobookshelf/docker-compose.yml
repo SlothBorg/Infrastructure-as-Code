@@ -1,0 +1,16 @@
+services:
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    volumes:
+      - ./data/audiobooks:/audiobooks
+      - ./data/podcasts:/podcasts
+      - ./data/metadata:/metadata
+      - ./data/config:/config
+    restart: unless-stopped
+    networks:
+      - proxy_network
+
+networks:
+  proxy_network:
+    external: true

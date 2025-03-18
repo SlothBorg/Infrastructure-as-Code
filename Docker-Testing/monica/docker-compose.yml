@@ -1,33 +1,31 @@
+---
 services:
-  bookstack:
-    image: lscr.io/linuxserver/bookstack:latest
-    container_name: bookstack
-    depends_on:
-      - bookstack_db
+  monica:
+    image: lscr.io/linuxserver/monica:latest
+    container_name: monica
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/New_York
-      - APP_URL=${DOMAIN}
-      - APP_KEY=${APP_KEY}
-      - DB_HOST=bookstack_db
+      - DB_HOST=monica_db
       - DB_PORT=3306
       - DB_USERNAME=${DB_USER}
       - DB_PASSWORD=${DB_PASS}
       - DB_DATABASE=${DB_NAME}
+      - APP_URL=${DOMAIN}
+      - APP_ENV=local
+      - APP_DISABLE_SIGNUP=true
     volumes:
-      - ./bookstack_data/config:/config
-    ports:
-      - 6875:80
+      - ./monica/config:/config
     restart: unless-stopped
     networks:
       - proxy_network
       - db_network
 
-  bookstack_db:
+  monica_db:
     image: lscr.io/linuxserver/mariadb:latest
-    container_name: bookstack_db
-    hostname: bookstack_db
+    container_name: monica_db
+    hostname: monica_db
     environment:
       - PUID=1000
       - PGID=1000
@@ -39,8 +37,6 @@ services:
     volumes:
       - ./db_data/config:/config
       - ./db_data/data:/var/lib/mysql
-    ports:
-      - 3306:3306
     restart: unless-stopped
     networks:
       - db_network
