@@ -1,0 +1,23 @@
+version: "3"
+services:
+  swag:
+    image: lscr.io/linuxserver/swag
+    container_name: swag
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - URL=slothborg.com
+      - SUBDOMAINS=wildcard # Set this if you want wildcard certs
+      - VALIDATION=dns # Options: http, dns, duckdns
+      - DNSPLUGIN=linode # Change based on your DNS provider
+      - EMAIL=azriel6615@protonmail.com
+      - ONLY_SUBDOMAINS=false
+    volumes:
+      - ./swag_data/config:/config
+    ports:
+      - 443:443
+      - 80:80 #optional
+    restart: unless-stopped
